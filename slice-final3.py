@@ -1,8 +1,4 @@
-'''
--*- coding: utf-8 -*-
 
-@author: user
-'''
 import operator as op
 
 from pyswip import Prolog
@@ -21,25 +17,14 @@ from pip._vendor.distlib.compat import raw_input
 
 prolog = Prolog()
 
-# file = raw_input("file name:")
-# flag = True
-# while flag:
-#     criterion = raw_input("slice criterion in form (statelab,{variable1,variable2}): ")
-#     if criterion.startswith("(") and criterion.endswith("})") and criterion.find(",{") != -1:
-#         flag = False
-#     else:
-#         print("Invalid input! Please try again!")
-
-
-
-file = "sCircle.pl"
-criterion = "(fD__workspace_antlr_C_SCircle_c___mprintSCircle_r22c7,{type_int(iv)})"
-
-# file = "problem01_label00_true_unreach_call_false_termination.pl"
-# criterion = "(fD__workspace_antlr_fileC_problem01_label00_true_unreach_call_false_termination_c___mcalculate_output_r381c6,{})"
-
-# file = "D:/workspace/antlr/fileC/incomplete.pl"
-# criterion = "(fD__incomplete_false_c___mappend_char_r413c2,{})"
+ file = raw_input("file name:")
+ flag = True
+ while flag:
+     criterion = raw_input("slice criterion in form (statelab,{variable1,variable2}): ")
+     if criterion.startswith("(") and criterion.endswith("})") and criterion.find(",{") != -1:
+         flag = False
+     else:
+         print("Invalid input! Please try again!")
 
 
 period1StartTime = time.time()#get input time
@@ -455,8 +440,6 @@ def computeControl(lab1,lab2):
       
 
 def bt(lab1,lab2):#lab1 is bigger than lab2
-#     if lab1 != "ret" and lab1 != "end":
-#     if not lab1.endswith("ret") and not lab1.endswith("end") and not lab2.endswith("ret") and not lab2.endswith("end"):
     if not lab1.endswith("ret") and not lab1.endswith("end") and not lab2.endswith("ret") and not lab2.endswith("end") and not lab1.endswith("retfinal") and not lab1.endswith("endfinal") and not lab2.endswith("retfinal") and not lab2.endswith("endfinal"):
 #   
         r1 = int(lab1[lab1.rfind("_r")+2:lab1.rfind("c")])
@@ -562,7 +545,6 @@ V = Variable()
 q = Query(find_instr(lab1,Y,Z))
 # IniflowFact = str()
 while True:
-#     if q.nextSolution() and (Z.value.__str__() != ("ret" or "end")) :
     if q.nextSolution() :        
         print("The instr of " + lab1 + " is:    " + Y.value.__str__())
 #         print(" and the next instr is in:" + Z.value.__str__())
@@ -571,9 +553,6 @@ while True:
         lab1 = Z.value.__str__()
         lab2 = Z.value.__str__()
         q.closeQuery()
-#         print(tempLab)
-#         if tempLab in loopStack.keys():
-#             print("2"+loopStack[tempLab])
             
         if not (instr.startswith("ite(") or instr.startswith("switch(")):
             if instr.startswith("for(") or instr.startswith("while("):
@@ -673,8 +652,6 @@ while True:
 #     for ky in iteStack.keys():
 #         print(ky+"----"+iteStack[ky])
     if tempLab in iteStack.keys():
-#         print(callMStack.keys())
-#         if lab1 != iteStack[tempLab].split(";")[0] and bt(iteStack[tempLab].split(";")[-1],lab1):
         if lab1 != iteStack[tempLab].split(";")[0] and not bt(lab1,iteStack[tempLab].split(";")[-1]) and not(lab1 in iteStack.keys()):
             iteStack[lab1] = iteStack[tempLab]
 #             print(1)
@@ -683,14 +660,8 @@ while True:
             lab1 = iteStack[tempLab].split(";")[0]
             iteStack[tempLab] = iteStack[tempLab][iteStack[tempLab].find(";"):]
 
-#         if lab1.endswith("ret") or lab1.endswith("end") and lab1 in iteStack.keys():
         if lab1.endswith("_ret") or lab1.endswith("_end") and lab1 in iteStack.keys():
-#             print("1:"+lab1)
-            lab1 = iteStack[lab1].split(";")[0]
-#             print(3)
-#             print("2:"+lab1)
-#             print()
-
+           lab1 = iteStack[lab1].split(";")[0]
     
         #del iteStack[tempLab]       
     if tempLab in switchStack.keys():
@@ -723,11 +694,7 @@ while True:
                 callMStack[tempLab] = callMStack[tempLab].split(";",1)[1]
             else:
                 lab1 = callMStack[tempLab]      
-        if lab1.endswith("retfinal") or lab1.endswith("endfinal") and lab1 in callMStack.keys():
-#             if callMStack[lab1].find(";")!=-1:
-#                 lab1 = callMStack[lab1].split(";",1)[0] 
-#             else:
-#                 lab1 = callMStack[lab1]     
+        if lab1.endswith("retfinal") or lab1.endswith("endfinal") and lab1 in callMStack.keys():   
             lab1 = callMStack[lab1][:callMStack[lab1].find(";")]
     
     if notExsitFact(IniflowFact):      
@@ -741,57 +708,18 @@ while True:
 q.closeQuery()
 
 
-# file = open("D:/workspace/antlr/fileC/test.pl","a+")
-# print("%flowFact")
-# controlQ = Query(flow(X,Y))
-# while controlQ.nextSolution():
-#     print("flow("+X.value.__str__()+","+Y.value.__str__()+").")
-# #     file.writelines("flow("+X.value.__str__()+","+Y.value.__str__()+").\n")
-# controlQ.closeQuery()#remember to close the query
-# print("%defFact")
-# controlQ = Query(defF(X,Y))
-# while controlQ.nextSolution():
-#     print("defF("+X.value.__str__()+","+Y.value.__str__()+").")
-# #     file.writelines("defF("+X.value.__str__()+","+Y.value.__str__()+").\n")
-# controlQ.closeQuery()#remember to close the query
-# print("%refFact")
-# controlQ = Query(refF(X,Y))
-# while controlQ.nextSolution():
-#     print("refF("+X.value.__str__()+","+Y.value.__str__()+").")
-# #     file.writelines("refF("+X.value.__str__()+","+Y.value.__str__()+").\n")
-# controlQ.closeQuery()#remember to close the query
+
 print("%controlFact")
 controlQ = Query(control(X,Y))
 while controlQ.nextSolution():
     print("control("+X.value.__str__()+","+Y.value.__str__()+").")
-#     file.writelines("control("+X.value.__str__()+","+Y.value.__str__()+").\n")
 controlQ.closeQuery()#remember to close the query
-#compute data dependence
-# dataDep = Functor("dataDep",3)
-# prolog.assertz("dataDep(M,N,X):-flow(M,N),refF(N,X),defF(M,X)")
-# prolog.assertz("dataDep(M,N,X):-purepath(M,T,X),flow(T,N),refF(N,X),defF(M,X)")
-#   
-# purepath = Functor("purepath",3)
-# prolog.assertz("purepath(M,N,X):-flow(M,N),\+defF(N,X)")
-# prolog.assertz("purepath(M,N,X):-purepath(M,T,X),flow(T,N),\+defF(T,X),M \== N")
+
 purepath = Functor("purepath",3)
 prolog.assertz("purepath(X,Y,V):-flow(X,Y),\+defF(X,V)")
-# prolog.assertz("purepath(X,Y,V):-purepath(X,T,V),flow(T,Y),\+defF(Y,V)")
 prolog.assertz("purepath(X,Y,V):-flow(X,T),\+defF(X,V),purepath(T,Y,V)")
 
-# purepath = Functor("purepath",3)
-# # prolog.assertz("purepath(X,Y,V):-!")
-# prolog.assertz("purepath(X,Y,V):-flow(X,Y),defF(X,V)")
-# prolog.assertz("purepath(X,Y,V):-flow(T,Y),purepath(X,T,V),\+refF(T,V)")
 
-
-# print("%purepathFact")
-# purepathQ = Query(purepath(X,Y,V))
-# while purepathQ.nextSolution():
-#     print("purepath("+X.value.__str__()+","+Y.value.__str__()+","+V.value.__str__()+").")
-# #     print(purepathQ.nextSolution())
-# #     print("1")
-# purepathQ.closeQuery()
 
 
 dataDep = Functor("dataDep",3)
@@ -836,57 +764,7 @@ def computeDataDep(q):
                 dataDepStack[keyStr] = dataDepStack[keyStr]+valueStr+";"
         else:
             dataDepStack[keyStr] = valueStr+";"
-       
-# @time_limit(2)
-# @timeout(5)
-# def computeDataDep(q,var):
-# #     q = Query(dataDep(X,Y,V))
-#     print(var+" query")
-#     while q.nextSolution():
-#         keyStr = X.value.__str__()
-#         valueStr = Y.value.__str__()+"^"+var
-#         print("dataDep:"+keyStr+","+valueStr)
-#         if keyStr in dataDepStack.keys():
-#             if dataDepStack[keyStr].find(valueStr) == -1:
-#                 dataDepStack[keyStr] = dataDepStack[keyStr]+valueStr+";"
-#         else:
-#             dataDepStack[keyStr] = valueStr+";"
-#         period1EndTime = time.time()
-#         timeStack["period1EndTime"] = period1EndTime
 
-          
-# # q = Query(dataDep(X,"fD__workspace_antlr_C_sqrtTest_c___mmain_r5c1",V))
-# q = Query(dataDep(X,Y,V))
-# try:    
-#     computeDataDep(q)
-# except TimeoutError:
-#     print("query end close")
-# finally:
-#     q.closeQuery()
-#     period2StartTime = time.time()
-# #     timeStack.append(period2StartTime)
-#     timeStack["period2StartTime"] = period2StartTime
-# #     print("1"+str(timeStack))
-#     print("time error time:"+str(timeStack["period2StartTime"]-timeStack["period1EndTime"]))
-#     print("Input To EDataDepTime:"+str(timeStack["period1EndTime"]-timeStack["period1StartTime"]))
-
-# paraStr = "defF(A,B)"
-# for solution in prolog.query(paraStr):
-#     para = solution["B"]
-#     if para not in varStack:
-#         varStack.append(para)
-# 
-# print("varStack:")
-# print(varStack)
-# while varStack:
-#     var = varStack.pop()
-#     q = Query(dataDep(X,Y,var))
-#     try:    
-#         computeDataDep(q,var)
-#     except TimeoutError:
-#         print(var+" query end close")
-#     finally:
-#         q.closeQuery()
 
 print("start dateDep compute")
 q = Query(dataDep(X,Y,V))
@@ -913,35 +791,7 @@ while controlQ.nextSolution():
 #     file.writelines("dataDepF("+X.value.__str__()+","+Y.value.__str__()+","+V.value.__str__()+").\n")
 controlQ.closeQuery()
 
-# file.close() 
 
-#compute the depth of the sliceS
-# path = Functor("path",3)
-# prolog.assertz("path(X,Y,D):-flow(X,Y),D is 1")
-# prolog.assertz("path(X,Y,D):-path(X,T,TD),flow(T,Y),D is TD+1")
-# depth = {}        
-# 
-# D = Variable()
-# @time_limit(1)
-# def computeDepth(query):
-#     while query.nextSolution():
-#         if int(D.value.__str__()) > depth[sliceLab]:
-#             depth[sliceLab] = int(D.value.__str__())
-#             
-# depth[sliceLab] = 0
-# depQuery = Query(path(entryLab,sliceLab,D))
-# try:   
-#     endTime = time.time()
-#     print("depth start:"+str(endTime-startTime))  
-#     computeDepth(depQuery)
-# except TimeoutError as e:
-#     print("query end close")
-# finally:
-#     depQuery.closeQuery()
-#     endTime = time.time()
-#     print("depth query time_out_error:"+str(endTime-startTime))
-#  
-# print(depth)
 
 print("SLICE BELOW:-----------------------------")
 
@@ -950,73 +800,7 @@ controlQ = Query(flow(X,Y))
 while controlQ.nextSolution():
     print("flow("+X.value.__str__()+","+Y.value.__str__()+").")
 controlQ.closeQuery()#remember to close the query
-# print("%defFact")
-# controlQ = Query(defF(X,Y))
-# while controlQ.nextSolution():
-#     print("defF("+X.value.__str__()+","+Y.value.__str__()+").")
-# controlQ.closeQuery()#remember to close the query
-# print("%refFact")
-# controlQ = Query(refF(X,Y))
-# while controlQ.nextSolution():
-#     print("refF("+X.value.__str__()+","+Y.value.__str__()+").")
-# controlQ.closeQuery()#remember to close the query
-# print("%controlFact")
-# controlQ = Query(control(X,Y))
-# while controlQ.nextSolution():
-#     print("control("+X.value.__str__()+","+Y.value.__str__()+").")
-# controlQ.closeQuery()#remember to close the query
-# print("%dataDepFact")
-# controlQ = Query(dataDepF(X,Y,"type_int_iv"))
-# while controlQ.nextSolution():
-#     count = count+1
-#     print("dataDepF("+X.value.__str__()+","+Y.value.__str__()+","+V.value.__str__()+").")
-# controlQ.closeQuery()#remember to close the query
 
-# depth = {}  
-# depth[sliceLab] = 0
-# endTime = time.time()
-# print("start slice:"+str(endTime-startTime))
-# 
-# weightQ = [sliceLab]
-# M = {sliceLab:2**depth[sliceLab]}
-# depPre = []
-# dDepPre = []
-# wFlag = False
-# R = []
-# #count = 0
-# sliceflow = Functor("sliceflow",2)
-# 
-# while weightQ:
-#     n = weightQ.pop()
-#     wFlag = False
-#     if n in R:
-#         continue
-#     else:
-#         R.append(n)
-#     depPreQuery = Query(control(X,n))
-#     while depPreQuery.nextSolution():
-#         depPre.append(X.value.__str__())
-#     depPreQuery.closeQuery()
-#     depPreQuery = Query(dataDepF(X,n,Y))
-#     while depPreQuery.nextSolution():
-#         depPre.append(X.value.__str__())
-#         dDepPre.append(X.value.__str__())
-#     depPreQuery.closeQuery()
-#     while depPre:
-#         m = depPre.pop()
-#         depth[m] = depth[n]-1
-#         if m in M.keys():
-#             wFlag = True
-#             continue
-#         weight = M[n]- (2**depth[m]/3)
-#         if m in dDepPre:
-#             weight = weight- (2**depth[m]/3)
-#         else:
-#             weight = weight- (2**depth[m]/3*2)
-#         weightQ.append(m)
-#         M[m] = weight
-#     if wFlag:
-#         continue     
 
 depth = {}  
 for lab in sliceLab:
@@ -1058,10 +842,7 @@ while weightQ:
         while depPreQuery.nextSolution():
             depPre.append(X.value.__str__())
             dDepPre.append(X.value.__str__())
-#             if X.value.__str__() not in dDepPre.keys():
-#                 dDepPre[X.value.__str__()] = curVar
-#             else:
-#                 dDepPre[X.value.__str__()] = dDepPre[X.value.__str__()]+","+curVar
+
         depPreQuery.closeQuery()
         if nVar.find(",") == -1:
             nVar = ""
@@ -1070,9 +851,6 @@ while weightQ:
             
     while depPre:
         m = depPre.pop()
-#         print("pre:"+m)
-#         print(n)
-#         print()
         depth[m] = depth[n]-1
         if m in M.keys():
             wFlag = True
@@ -1187,11 +965,7 @@ def rouletteWheelSelection(LabWeightStack):
 
 eaChoose = raw_input("start roulette Wheel Selection(Y or N):")
 
-# if eaChoose == "Y":
-#     cc = rouletteWheelSelection(M)  
-#     print(cc)
-#     cc = rouletteWheelSelection(instrM)  
-#     print("rouletteWheelSelection"+str(cc))
+
 while eaChoose == "Y":
     cc = rouletteWheelSelection(M)  
     print(cc)
@@ -1201,69 +975,4 @@ while eaChoose == "Y":
 
 
 
-
-
-
-
-
-
-
-
-# 
-# 
-# 
-# 
-# def computeSliceFlow(sliceStack,preLab,curLabel):
-#     sliceflowFact = str()
-#     if preLab in sliceStack:
-# #         print(sliceStack)
-# #         q = Query(find_instr(preLab,X,Y))
-# #         if q.nextSolution():                
-# #             instr = X.value.__str__()
-# #         q.closeQuery()
-#         sliceflowFact = "sliceflow("+preLab+","+curLabel+");"
-# #         print("1:"+curLabel+" "+sliceflowFact)
-#         return sliceflowFact
-#     else:
-#         preLabelQ = Query(flow(X,preLab))
-#         ppreLabelS = []
-#         while preLabelQ.nextSolution():
-#             ppreLabelS.append(X.value.__str__())
-#         preLabelQ.closeQuery()
-#         while ppreLabelS:
-#             ppreLabel = ppreLabelS.pop()
-#             sliceflowFact = sliceflowFact + computeSliceFlow(sliceStack, ppreLabel,curLabel)
-# #             print("2:"+curLabel+" "+sliceflowFact)
-#         return sliceflowFact
-# 
-# 
-# i = 0
-# while i<len(R):
-#     sliceLab = R[i]  
-#     i = i+1
-# #     print("^"+sliceLab)     
-#     preSliceLabQ = Query(flow(X,sliceLab))
-#     preSliceLabS = []
-#     while preSliceLabQ.nextSolution():
-#         preSliceLabS.append(X.value.__str__())   
-#     preSliceLabQ.closeQuery() 
-#     sfFact = str()
-#     while preSliceLabS:
-#         preSliceLab = preSliceLabS.pop()
-# #         print("^^"+preSliceLab)
-#         sfFact = sfFact+computeSliceFlow(R, preSliceLab,sliceLab)
-# 
-#     while sfFact.find(";") != -1:
-#         prolog.assertz(sfFact.split(";",1)[0])
-#         if sfFact.find(";s") != -1:
-#             sfFact = sfFact.split(";",1)[1]
-#         else:
-#             sfFact = ""
-#             
-# print("%sliceflowFact")
-# 
-# sliceflow = Query(sliceflow(X,Y))
-# while sliceflow.nextSolution():
-#     print("sliceflow("+X.value.__str__()+","+Y.value.__str__()+").")
-# sliceflow.closeQuery()#remember to close the query
 
