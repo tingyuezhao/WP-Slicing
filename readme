@@ -4,3 +4,7 @@
 逻辑事实权重切片代码slice-final3.py文件中，开发环境为eclipse oxygen、python 3.6.8、SWI 7.6.4，
 安装教程见https://blog.csdn.net/tingyuezhao/article/details/83510990
 若有其他疑问请发邮件至tingyuezhao@126.com进行交流
+
+
+for Yuan Liu:
+code for "method call analysis" is in WP-Slicing/slice-final3.py def dealWithCallMInstr(lab,instr,toLab)
