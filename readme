@@ -1,3 +1,6 @@
+本目录为Weight prioritized slicing based on constraint logic programming for fault localization的部分配套代码
 论文原始地址：https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0231331
 .pl的几份文件是实验初期的测试文件
-逻辑事实权重切片代码slice-final3.py文件中，开发环境为eclipse oxygen、python 3.6.8、SWI 7.6.4，安装教程见https://blog.csdn.net/tingyuezhao/article/details/83510990
+逻辑事实权重切片代码slice-final3.py文件中，开发环境为eclipse oxygen、python 3.6.8、SWI 7.6.4，
+安装教程见https://blog.csdn.net/tingyuezhao/article/details/83510990
+若有其他疑问请发邮件至tingyuezhao@126.com进行交流
